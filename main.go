@@ -6,6 +6,8 @@ import (
 	// "net/http"
 
 	"log"
+	"pustaka-api/book"
+	"pustaka-api/handler"
 	"pustaka-api/initializer"
 
 	"github.com/gin-gonic/gin"
@@ -36,9 +38,9 @@ func main() {
 	// 	log.Fatal("db connection error")
 	// }
 
-	// bookRepository := book.NewRepository(db)
-	// bookService := book.NewService(bookRepository)
-	// bookHandler := handler.NewBookHandler(bookService)
+	bookRepository := book.NewRepository(db)
+	bookService := book.NewService(bookRepository)
+	bookHandler := handler.NewBookHandler(bookService)
 
 	// userRepository := user.NewRepository(db)
 	// userService := user.NewService(userRepository)
@@ -104,7 +106,7 @@ func main() {
 
 	router := gin.Default()
 
-	// routerV1 := router.Group("/v1")
+	routerV1 := router.Group("/v1")
 
 	// routerV1.GET("/", handler.RootHandler)
 
@@ -126,12 +128,15 @@ func main() {
 
 	// routerV1.POST("/login", userHandler.Login)
 
-	// routerV1Books := routerV1.Group("/books", middleware.RequiredAuth)
-	// routerV1Books.POST("", bookHandler.PostBooksHandler)
-	// routerV1Books.GET("", bookHandler.GetBooksByUser)
-	// routerV1Books.GET("/:id", bookHandler.GetBookById)
-	// routerV1Books.PUT("/:id", bookHandler.UpdateBookHandler)
-	// routerV1Books.DELETE("/:id", bookHandler.DeleteBookHandler)
+	routerV1Books := routerV1.Group("/books")
+	routerV1Books.POST("", bookHandler.PostBooksHandler)
+	routerV1Books.GET("", bookHandler.GetBooks)
+	routerV1Books.GET("/id/:id", bookHandler.GetBookById)
+	routerV1Books.GET("/title/:title", bookHandler.FindByTitleHandler)
+	routerV1Books.PUT("/id/:id", bookHandler.UpdateBookHandler)
+	routerV1Books.PUT("/title/:title", bookHandler.UpdateByTitleBookHandler)
+	routerV1Books.DELETE("/id/:id", bookHandler.DeleteBookHandler)
+	routerV1Books.DELETE("/title/:title", bookHandler.DeleteByTitleHandler)
 
 	router.Run(":3030")
 }
