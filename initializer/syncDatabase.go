@@ -5,12 +5,12 @@ import (
 	"pustaka-api/book"
 	"pustaka-api/category"
 	"pustaka-api/loan"
-	"pustaka-api/role"
+	"pustaka-api/roles"
 
 	"gorm.io/gorm"
 )
 
 func SyncDatabase(db *gorm.DB) error {
-	err := db.AutoMigrate(book.Book{}, account.Account{}, loan.Loan{}, category.Category{}, role.Role{})
+	err := db.AutoMigrate(category.Category{}, book.Book{}, loan.Loan{}, account.Account{}, roles.Roles{})
 	return err
 }

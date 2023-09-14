@@ -8,8 +8,8 @@ import (
 
 type Loan struct {
 	gorm.Model
-	DueDate time.Duration
-	Status  int
-	Book    int
-	Account int
+	DueDate   time.Duration
+	Status    int
+	BookId    uint
+	AccountId uint
 }

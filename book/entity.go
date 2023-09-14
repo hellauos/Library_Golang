@@ -1,18 +1,18 @@
 package book
 
 import (
-	"time"
+	"pustaka-api/loan"
+
+	"gorm.io/gorm"
 )
 
 type Book struct {
-	ID          int
+	gorm.Model
 	Title       string
 	Description string
-	Price       int
 	Location    string
+	Price       int
 	Stock       int
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	// Loan        []loan.Loan
-	Category int
+	CategoryID  uint
+	Loans       []loan.Loan
 }

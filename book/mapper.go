@@ -1,10 +1,10 @@
 package book
 
-func ConvertToBookResponse(b Book) BookResponse {
-	return BookResponse{
-		ID:          b.ID,
-		Title:       b.Title,
-		Description: b.Description,
-		Price:       b.Price,
-	}
-}
+// func ConvertToBookResponse(b Book) BookResponse {
+// 	return BookResponse{
+// 		ID:          int(b.Id),
+// 		Title:       b.Title,
+// 		Description: b.Description,
+// 		// Price:       b.Price,
+// 	}
+// }

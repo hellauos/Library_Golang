@@ -1,9 +1,9 @@
-package role
+package roles
 
 import "gorm.io/gorm"
 
-type Role struct {
+type Roles struct {
 	gorm.Model
 	Name      string
-	AccountId int
+	AccountId uint
 }

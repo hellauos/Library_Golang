@@ -2,7 +2,7 @@ package account
 
 import (
 	"pustaka-api/loan"
-	"pustaka-api/role"
+	"pustaka-api/roles"
 
 	"gorm.io/gorm"
 )
@@ -13,5 +13,5 @@ type Account struct {
 	Email    string `gorm:"unique"`
 	Password string
 	Loans    []loan.Loan
-	Role     role.Role
+	Roles    roles.Roles
 }
