@@ -1,14 +1,18 @@
 package book
 
-import "time"
+import (
+	"time"
+)
 
 type Book struct {
 	ID          int
 	Title       string
 	Description string
 	Price       int
-	Rating      int
+	Location    string
+	Stock       int
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	UserId      uint
+	// Loan        []loan.Loan
+	Category int
 }

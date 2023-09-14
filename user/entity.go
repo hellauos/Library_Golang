@@ -1,14 +1,17 @@
 package user
 
-import (
-	"pustaka-api/book"
+// import (
+// 	"pustaka-api/loan"
+// 	"pustaka-api/role"
 
-	"gorm.io/gorm"
-)
+// 	"gorm.io/gorm"
+// )
 
-type User struct {
-	gorm.Model
-	Email    string `gorm:"unique"`
-	Password string
-	Books    []book.Book
-}
+// type Account struct {
+// 	gorm.Model
+// 	name     string
+// 	Email    string `gorm:"unique"`
+// 	Password string
+// 	Loans    []loan.Loan
+// 	Role     role.Role
+// }

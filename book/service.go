@@ -32,8 +32,8 @@ func (s *service) Create(bookRequest BookRequest, UserId uint) (Book, error) {
 		Title:       bookRequest.Title,
 		Price:       bookRequest.Price,
 		Description: bookRequest.Description,
-		Rating:      bookRequest.Rating,
-		UserId:      UserId,
+		// Rating:      bookRequest.Rating,
+		// UserId:      UserId,
 	}
 	newBook, err := s.repository.Create(book)
 	return newBook, err
@@ -51,9 +51,9 @@ func (s *service) Update(ID int, bookRequest BookRequest) (Book, error) {
 	if bookRequest.Description != "" {
 		book.Description = bookRequest.Description
 	}
-	if bookRequest.Rating != 0 {
-		book.Rating = bookRequest.Rating
-	}
+	// if bookRequest.Rating != 0 {
+	// 	book.Rating = bookRequest.Rating
+	// }
 
 	newBook, err := s.repository.Update(book)
 	return newBook, err

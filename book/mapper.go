@@ -6,6 +6,5 @@ func ConvertToBookResponse(b Book) BookResponse {
 		Title:       b.Title,
 		Description: b.Description,
 		Price:       b.Price,
-		Rating:      b.Rating,
 	}
 }
