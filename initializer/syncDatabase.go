@@ -11,6 +11,6 @@ import (
 )
 
 func SyncDatabase(db *gorm.DB) error {
-	err := db.AutoMigrate(category.Category{}, book.Book{}, loan.Loan{}, account.Account{}, roles.Roles{})
+	err := db.AutoMigrate(roles.Roles{}, account.Account{}, category.Category{}, book.Book{}, loan.Loan{})
 	return err
 }

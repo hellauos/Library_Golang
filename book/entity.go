@@ -2,12 +2,10 @@ package book
 
 import (
 	"pustaka-api/loan"
-
-	"gorm.io/gorm"
 )
 
 type Book struct {
-	gorm.Model
+	ID          uint
 	Title       string
 	Description string
 	Location    string

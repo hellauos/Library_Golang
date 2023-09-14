@@ -1,9 +1,11 @@
 package roles
 
-import "gorm.io/gorm"
+import (
+	"pustaka-api/account"
+)
 
 type Roles struct {
-	gorm.Model
-	Name      string
-	AccountId uint
+	ID      uint
+	Name    string
+	Account account.Account
 }

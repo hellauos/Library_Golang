@@ -2,16 +2,13 @@ package account
 
 import (
 	"pustaka-api/loan"
-	"pustaka-api/roles"
-
-	"gorm.io/gorm"
 )
 
 type Account struct {
-	gorm.Model
+	ID       uint
 	name     string
 	Email    string `gorm:"unique"`
 	Password string
 	Loans    []loan.Loan
-	Roles    roles.Roles
+	RolesId  uint
 }
