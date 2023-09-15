@@ -47,13 +47,15 @@ func (h *bookHandler) PostBooksHandler(c *gin.Context) {
 
 	// Mengekstrak JWT claims dari konteks
 	jwtClaims, _ := c.Get("jwtClaims")
-	claims, ok := jwtClaims.(jwt.MapClaims)
+	claims, _ := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
-	fmt.Println(claims)
-	fmt.Println(rolesID)
-	if !ok || rolesID != 1 {
+	role, _ := claims["roles"].(float64)
+	roleID := uint(role)
+
+	fmt.Println("Role ID:", roleID)
+
+	if roleID != 1 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
 		return
 	}
@@ -155,10 +157,6 @@ func (h *bookHandler) UpdateBookHandler(c *gin.Context) {
 		}
 	}
 	ID, _ := strconv.Atoi(c.Param("id"))
-
-	// jwtClaims, _ := c.Get("jwtClaims")
-	// claims, _ := jwtClaims.(jwt.MapClaims)
-	// userID, _ := claims["sub"].(float64)
 
 	books, err := h.bookService.FindAll()
 
