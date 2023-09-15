@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"pustaka-api/book"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 type bookHandler struct {
@@ -18,6 +16,42 @@ type bookHandler struct {
 
 func NewBookHandler(service book.Service) *bookHandler {
 	return &bookHandler{service}
+}
+
+func (h *bookHandler) GetBookByTitleCategory(c *gin.Context) {
+	var getBookByTitleCategoryRequest book.GetBookByTitleCategoryRequest
+	err := c.ShouldBindJSON(&getBookByTitleCategoryRequest)
+	if err != nil {
+		switch err.(type) {
+		case validator.ValidationErrors:
+			errorMessages := []string{}
+			for _, e := range err.(validator.ValidationErrors) {
+				errorMessage := fmt.Sprintf("Error on Filed: %s, condition: %s", e.Field(), e.ActualTag())
+				errorMessages = append(errorMessages, errorMessage)
+			}
+			c.JSON(http.StatusBadRequest, gin.H{
+				"errors": errorMessages,
+			})
+			return
+		case *json.UnmarshalTypeError:
+			c.JSON(http.StatusBadRequest, gin.H{
+				"errors": err.Error(),
+			})
+			return
+		}
+	}
+	book, err := h.bookService.FindBookByTitleCategory(getBookByTitleCategoryRequest)
+	if err != nil {
+		errorMessage := err.Error() // Extract the error message
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": errorMessage,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": book,
+	})
+
 }
 
 func (h *bookHandler) PostBooksHandler(c *gin.Context) {
