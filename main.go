@@ -2,12 +2,12 @@ package main
 
 import (
 	"log"
+	"pustaka-api/account"
 	"pustaka-api/book"
 	"pustaka-api/handler"
 	"pustaka-api/initializer"
-	"pustaka-api/middleware"
-	"pustaka-api/account"
 	"pustaka-api/loan"
+	"pustaka-api/middleware"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -36,6 +36,10 @@ func main() {
 	loanRepository := loan.NewRepository(db)
 	loanService := loan.NewService(loanRepository)
 	loanHandler := handler.NewLoanHandler(loanService)
+
+	accountRepository := account.NewRepository(db)
+	accountService := account.NewService(accountRepository)
+	accountHandler := handler.NewAccountHandler(accountService)
 
 	router := gin.Default()
 
@@ -66,7 +70,7 @@ func main() {
 	routerV1.POST("/books/LoanBook", loanHandler.LoanBook)
 	routerV1.POST("/books/GetLoanData", loanHandler.GetLoanData)
 	routerV1.POST("/books/ReturnBook", loanHandler.ReturnBook)
-	
+
 	// routerV1Books.POST("", bookHandler.PostBooksHandler)
 	// routerV1Books.GET("/:id", bookHandler.GetBookById)
 	// routerV1Books.PUT("/:id", bookHandler.UpdateBookHandler)

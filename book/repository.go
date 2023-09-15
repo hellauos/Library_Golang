@@ -7,12 +7,13 @@ import (
 )
 
 type Repository interface {
-	// FindAll() ([]Book, error)
-	// FindById(ID int) (Book, error)
+	FindAll() ([]Book, error)
+	FindById(ID int) (Book, error)
 	// FindAllBooksByUser(UserID uint) ([]Book, error)
-	// Create(book Book) (Book, error)
-	// Update(book Book) (Book, error)
-	// Delete(book Book) (Book, error)
+	Create(book Book) (Book, error)
+	Update(book Book) (Book, error)
+	Delete(book Book) (Book, error)
+	FindByTitle(title string) (Book, error)
 	FindBookByTitleCategory(getBookByTitleCategoryRequest GetBookByTitleCategoryRequest) ([]Book, error)
 }
 
@@ -39,9 +40,8 @@ func (r *repository) FindBookByTitleCategory(getBookByTitleCategoryRequest GetBo
 
 }
 
-
-// func (r *repository) FindAll() ([]Book, error) {
-// 	var books []Book
+func (r *repository) FindAll() ([]Book, error) {
+	var books []Book
 
 	err := r.db.Find(&books).Error
 

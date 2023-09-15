@@ -1,13 +1,16 @@
 package book
 
 type Service interface {
-	// FindAll() ([]Book, error)
+	FindAll() ([]Book, error)
 	// FindAllBooksByUser(UserID uint) ([]Book, error)
-	// FindById(ID int) (Book, error)
-	// Create(bookRequest BookRequest, UserId uint) (Book, error)
-	// Update(ID int, bookRequest BookRequest) (Book, error)
-	// Delete(ID int) (Book, error)
+	FindById(ID int) (Book, error)
+	Create(bookRequest BookRequest) (Book, error)
+	Update(ID int, bookRequest BookRequest) (Book, error)
+	UpdateByTitle(title string, bookRequest BookRequest) (Book, error)
+	Delete(ID int) (Book, error)
+	DeleteByTitle(title string) (Book, error)
 	FindBookByTitleCategory(getBookByTitleCategoryRequest GetBookByTitleCategoryRequest) ([]Book, error)
+	FindByTitle(title string) (Book, error)
 	// LoanBook(loanRequest LoanBookRequest) (Book, error)
 }
 
