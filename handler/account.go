@@ -4,22 +4,22 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"pustaka-api/user"
+	"pustaka-api/account"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
-type userHandler struct {
-	bookService user.Service
+type accountHandler struct {
+	bookService account.Service
 }
 
-func NewUserHandler(service user.Service) *userHandler {
-	return &userHandler{service}
+func NewAccountHandler(service account.Service) *accountHandler {
+	return &accountHandler{service}
 }
 
-func (h *userHandler) SignUp(c *gin.Context) {
-	var signUpRequest user.SignUpRequest
+func (h *accountHandler) SignUp(c *gin.Context) {
+	var signUpRequest account.SignupRequest
 
 	err := c.ShouldBindJSON(&signUpRequest)
 	// tanda & menunjukkan itu adalah pointernya, sedangakan tanda * merupakan valuenya
@@ -44,7 +44,7 @@ func (h *userHandler) SignUp(c *gin.Context) {
 		}
 	}
 	fmt.Println(signUpRequest)
-	user, err := h.bookService.Create(signUpRequest)
+	account, err := h.bookService.Create(signUpRequest)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -53,12 +53,12 @@ func (h *userHandler) SignUp(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("User %v created successfully", user.Email),
+		"message": fmt.Sprintf("Account %v created successfully", account.Email),
 	})
 }
 
-func (h *userHandler) Login(c *gin.Context) {
-	var loginRequest user.LoginRequest
+func (h *accountHandler) Login(c *gin.Context) {
+	var loginRequest account.LoginRequest
 
 	err := c.ShouldBindJSON(&loginRequest)
 
@@ -96,3 +96,18 @@ func (h *userHandler) Login(c *gin.Context) {
 		},
 	})
 }
+
+// func (h *accountHandler) GetAccountByRoleHandler(c *gin.Context) {
+//     roleID := c.Param("roleID") // Ambil roleID dari URL atau request parameter sesuai dengan framework yang Anda gunakan
+    
+// 	account, err := h.service.GetAccountByRole(roleID)
+//     if err != nil {
+//         // Handle kesalahan, misalnya dengan mengirimkan respons HTTP 500
+//         c.JSON(http.StatusInternalServerError, gin.H{
+// 			"error": err.Error()})
+//         return
+//     }
+
+	// Kirim respons HTTP 200 dengan daftar akun yang sesuai
+//     c.JSON(http.StatusOK, account)
+// }

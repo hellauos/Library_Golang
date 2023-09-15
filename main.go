@@ -6,7 +6,7 @@ import (
 	"pustaka-api/handler"
 	"pustaka-api/initializer"
 	"pustaka-api/middleware"
-	"pustaka-api/user"
+	"pustaka-api/account"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -31,16 +31,16 @@ func main() {
 	bookService := book.NewService(bookRepository)
 	bookHandler := handler.NewBookHandler(bookService)
 
-	userRepository := user.NewRepository(db)
-	userService := user.NewService(userRepository)
-	userHandler := handler.NewUserHandler(userService)
+	accountRepository := account.NewRepository(db)
+	accountService := account.NewService(accountRepository)
+	accountHandler := handler.NewAccountHandler(accountService)
 	router := gin.Default()
 
 	routerV1 := router.Group("/v1")
 
-	routerV1.POST("/signUp", userHandler.SignUp)
+	routerV1.POST("/signUp", accountHandler.SignUp)
 
-	routerV1.POST("/login", userHandler.Login)
+	routerV1.POST("/login", accountHandler.Login)
 
 	routerV1Books := routerV1.Group("/books", middleware.RequiredAuth)
 	routerV1Books.POST("", bookHandler.PostBooksHandler)

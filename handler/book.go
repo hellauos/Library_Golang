@@ -50,10 +50,10 @@ func (h *bookHandler) PostBooksHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	RolesId, _ := claims["roles"].(float64)
 	fmt.Println(claims)
-	fmt.Println(rolesID)
-	if !ok || rolesID != 1 {
+	fmt.Println(RolesId)
+	if !ok || RolesId != 1 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
 		return
 	}
@@ -184,16 +184,18 @@ func (h *bookHandler) UpdateBookHandler(c *gin.Context) {
 	}
 	// Mengekstrak JWT claims dari konteks
 	jwtClaims, _ := c.Get("jwtClaims")
-	claims, ok := jwtClaims.(jwt.MapClaims)
+	claims, _ := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	role, ok := claims["roles"].(float64)
 	fmt.Println(claims)
-	fmt.Println(rolesID)
-	if !ok || rolesID != 1 {
+	fmt.Println(role)
+	roleID := uint(role)
+	if !ok || roleID != 1 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
 		return
 	}
+
 	b, err := h.bookService.Update(ID, bookRequest)
 	bookResponse := book.ConvertToBookResponse(b)
 	if err != nil {
@@ -263,7 +265,7 @@ func (h *bookHandler) UpdateByTitleBookHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
 	if !ok || rolesID != 1 {
@@ -318,7 +320,7 @@ func (h *bookHandler) DeleteBookHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
 	if !ok || rolesID != 1 {
@@ -381,7 +383,7 @@ func (h *bookHandler) DeleteByTitleHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
 	if !ok || rolesID != 1 {
