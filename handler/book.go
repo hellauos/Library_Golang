@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type bookHandler struct {
@@ -44,10 +45,20 @@ func (h *bookHandler) PostBooksHandler(c *gin.Context) {
 		}
 	}
 
-	// jwtClaims, _ := c.Get("jwtClaims")
-	// claims, _ := jwtClaims.(jwt.MapClaims)
-	// userID, _ := claims["sub"].(float64)
-	// book, err := h.bookService.Create(bookRequest, uint(userID))
+	// Mengekstrak JWT claims dari konteks
+	jwtClaims, _ := c.Get("jwtClaims")
+	claims, ok := jwtClaims.(jwt.MapClaims)
+	fmt.Println(jwtClaims)
+	// Memeriksa apakah pengguna memiliki peran "admin"
+	rolesID, _ := claims["roles"].(uint)
+	fmt.Println(claims)
+	fmt.Println(rolesID)
+	if !ok || rolesID != 1 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
+		return
+	}
+
+	// Jika pengguna adalah admin, maka lanjutkan dengan membuat buku
 	book, err := h.bookService.Create(bookRequest)
 
 	if err != nil {
@@ -94,7 +105,6 @@ func (h *bookHandler) GetBookById(c *gin.Context) {
 		})
 		return
 	}
-
 	bookResponse := book.ConvertToBookResponse(b)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -114,7 +124,6 @@ func (h *bookHandler) FindByTitleHandler(c *gin.Context) {
 		})
 		return
 	}
-
 	bookResponse := book.ConvertToBookResponse(b)
 	c.JSON(http.StatusOK, gin.H{
 		"data": bookResponse,
@@ -173,7 +182,18 @@ func (h *bookHandler) UpdateBookHandler(c *gin.Context) {
 		})
 		return
 	}
-
+	// Mengekstrak JWT claims dari konteks
+	jwtClaims, _ := c.Get("jwtClaims")
+	claims, ok := jwtClaims.(jwt.MapClaims)
+	fmt.Println(jwtClaims)
+	// Memeriksa apakah pengguna memiliki peran "admin"
+	rolesID, _ := claims["roles"].(uint)
+	fmt.Println(claims)
+	fmt.Println(rolesID)
+	if !ok || rolesID != 1 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
+		return
+	}
 	b, err := h.bookService.Update(ID, bookRequest)
 	bookResponse := book.ConvertToBookResponse(b)
 	if err != nil {
@@ -238,7 +258,18 @@ func (h *bookHandler) UpdateByTitleBookHandler(c *gin.Context) {
 		})
 		return
 	}
-
+	// Mengekstrak JWT claims dari konteks
+	jwtClaims, _ := c.Get("jwtClaims")
+	claims, ok := jwtClaims.(jwt.MapClaims)
+	fmt.Println(jwtClaims)
+	// Memeriksa apakah pengguna memiliki peran "admin"
+	rolesID, _ := claims["roles"].(uint)
+	fmt.Println(claims)
+	fmt.Println(rolesID)
+	if !ok || rolesID != 1 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
+		return
+	}
 	b, err := h.bookService.UpdateByTitle(title, bookRequest)
 	bookResponse := book.ConvertToBookResponse(b)
 	if err != nil {
@@ -282,7 +313,18 @@ func (h *bookHandler) DeleteBookHandler(c *gin.Context) {
 	// 	})
 	// 	return
 	// }
-
+	// Mengekstrak JWT claims dari konteks
+	jwtClaims, _ := c.Get("jwtClaims")
+	claims, ok := jwtClaims.(jwt.MapClaims)
+	fmt.Println(jwtClaims)
+	// Memeriksa apakah pengguna memiliki peran "admin"
+	rolesID, _ := claims["roles"].(uint)
+	fmt.Println(claims)
+	fmt.Println(rolesID)
+	if !ok || rolesID != 1 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
+		return
+	}
 	b, err := h.bookService.Delete(ID)
 
 	if err != nil {
@@ -334,7 +376,18 @@ func (h *bookHandler) DeleteByTitleHandler(c *gin.Context) {
 		})
 		return
 	}
-
+	// Mengekstrak JWT claims dari konteks
+	jwtClaims, _ := c.Get("jwtClaims")
+	claims, ok := jwtClaims.(jwt.MapClaims)
+	fmt.Println(jwtClaims)
+	// Memeriksa apakah pengguna memiliki peran "admin"
+	rolesID, _ := claims["roles"].(uint)
+	fmt.Println(claims)
+	fmt.Println(rolesID)
+	if !ok || rolesID != 1 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
+		return
+	}
 	bookResponse := book.ConvertToBookResponse(b)
 	c.JSON(http.StatusOK, gin.H{
 		"data": bookResponse,

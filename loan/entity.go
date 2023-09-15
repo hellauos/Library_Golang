@@ -5,9 +5,9 @@ import (
 )
 
 type Loan struct {
-	ID        uint
-	DueDate   time.Duration
-	Status    int
-	BookId    uint
-	AccountId uint
+	ID      uint
+	DueDate time.Duration
+	Status  int
+	BookId  uint
+	UserId  uint
 }

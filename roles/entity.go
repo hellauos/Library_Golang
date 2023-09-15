@@ -1,11 +1,9 @@
 package roles
 
-import (
-	"pustaka-api/account"
-)
+import "pustaka-api/user"
 
 type Roles struct {
-	ID      uint
-	Name    string
-	Account account.Account
+	ID   uint
+	Name string
+	User user.User
 }
