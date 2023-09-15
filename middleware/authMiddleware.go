@@ -80,7 +80,7 @@ func RequiredAuthLoan(c *gin.Context) {
 	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
-	if !ok || rolesID != 1 {
+	if !ok || rolesID != 2 {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"errors": "Access denied",
 		})
