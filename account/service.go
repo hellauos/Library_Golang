@@ -62,6 +62,7 @@ func (s *service) Login(loginRequest LoginRequest) (string, error) {
 // 	//Membuat Token JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"account_Id": account.ID,
+		"roles": account.RolesId,
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
