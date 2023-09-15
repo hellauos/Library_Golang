@@ -50,10 +50,10 @@ func (h *bookHandler) PostBooksHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	RolesId, _ := claims["roles"]
+	RolesId, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(RolesId)
-	if !ok || RolesId != float64(1) {
+	if !ok || RolesId != 1 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
 		return
 	}
@@ -265,7 +265,7 @@ func (h *bookHandler) UpdateByTitleBookHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
 	if !ok || rolesID != 1 {
@@ -320,7 +320,7 @@ func (h *bookHandler) DeleteBookHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
 	if !ok || rolesID != 1 {
@@ -383,7 +383,7 @@ func (h *bookHandler) DeleteByTitleHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	rolesID, _ := claims["roles"].(uint)
+	rolesID, _ := claims["roles"].(float64)
 	fmt.Println(claims)
 	fmt.Println(rolesID)
 	if !ok || rolesID != 1 {
