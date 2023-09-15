@@ -1,5 +1,10 @@
 package book
 
+type GetBookByTitleCategoryRequest struct {
+	Title    string `json:"title"`
+	Category string `json:"category"`
+}
+
 // type BookRequest struct {
 // 	Title       string `binding:"required"`
 // 	Price       int    `json:"price" binding:"required,number"`
