@@ -97,17 +97,17 @@ func (h *accountHandler) Login(c *gin.Context) {
 	})
 }
 
-func (h *accountHandler) GetAccountByRoleHandler(c *gin.Context) {
-    roleID := c.Param("roleID") // Ambil roleID dari URL atau request parameter sesuai dengan framework yang Anda gunakan
+// func (h *accountHandler) GetAccountByRoleHandler(c *gin.Context) {
+//     roleID := c.Param("roleID") // Ambil roleID dari URL atau request parameter sesuai dengan framework yang Anda gunakan
     
-	account, err := h.service.GetAccountByRole(roleID)
-    if err != nil {
-        // Handle kesalahan, misalnya dengan mengirimkan respons HTTP 500
-        c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error()})
-        return
-    }
+// 	account, err := h.service.GetAccountByRole(roleID)
+//     if err != nil {
+//         // Handle kesalahan, misalnya dengan mengirimkan respons HTTP 500
+//         c.JSON(http.StatusInternalServerError, gin.H{
+// 			"error": err.Error()})
+//         return
+//     }
 
 	// Kirim respons HTTP 200 dengan daftar akun yang sesuai
-    c.JSON(http.StatusOK, account)
-}
+//     c.JSON(http.StatusOK, account)
+// }

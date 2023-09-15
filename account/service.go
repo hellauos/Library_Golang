@@ -35,7 +35,7 @@ func (s *service) Create(signupRequest SignupRequest) (Account, error) {
 
 	//Save account
 	account := Account{
-		name:     signupRequest.Name,
+		Name:     signupRequest.Name,
 		Email:    signupRequest.Email,
 		Password: string(hash),
 		RolesId: signupRequest.RolesId,
