@@ -2,22 +2,34 @@ package book
 
 type Service interface {
 	FindAll() ([]Book, error)
+	// FindAllBooksByUser(UserID uint) ([]Book, error)
 	FindById(ID int) (Book, error)
-	FindByTitle(title string) (Book, error)
 	Create(bookRequest BookRequest) (Book, error)
 	Update(ID int, bookRequest BookRequest) (Book, error)
 	UpdateByTitle(title string, bookRequest BookRequest) (Book, error)
 	Delete(ID int) (Book, error)
 	DeleteByTitle(title string) (Book, error)
+	FindBookByTitleCategory(getBookByTitleCategoryRequest GetBookByTitleCategoryRequest) ([]Book, error)
+	FindByTitle(title string) (Book, error)
+	// LoanBook(loanRequest LoanBookRequest) (Book, error)
 }
 
 type service struct {
 	repository Repository
-}	
+}
 
 func NewService(repository Repository) *service {
 	return &service{repository}
 }
+func (s *service) FindBookByTitleCategory(getBookByTitleCategoryRequest GetBookByTitleCategoryRequest) ([]Book, error) {
+	books, err := s.repository.FindBookByTitleCategory(getBookByTitleCategoryRequest)
+	return books, err
+}
+
+// func (s *service) LoanBook(loanBook LoanBookRequest) (Book, error) {
+// 	book, err := s.repository.LoanBook(loanBook)
+// 	return book, err
+// }
 
 func (s *service) FindAll() ([]Book, error) {
 	books, err := s.repository.FindAll()
