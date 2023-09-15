@@ -6,7 +6,7 @@ import (
 
 type Account struct {
 	ID       uint
-	name     string
+	Name     string
 	Email    string `gorm:"unique"`
 	Password string
 	Loans    []loan.Loan

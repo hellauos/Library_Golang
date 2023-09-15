@@ -6,6 +6,9 @@ import (
 	// "net/http"
 
 	"log"
+	// "pustaka-api/book"
+	"pustaka-api/handler"
+	"pustaka-api/account"
 	"pustaka-api/initializer"
 
 	"github.com/gin-gonic/gin"
@@ -40,11 +43,11 @@ func main() {
 	// bookService := book.NewService(bookRepository)
 	// bookHandler := handler.NewBookHandler(bookService)
 
-	// userRepository := user.NewRepository(db)
-	// userService := user.NewService(userRepository)
-	// userHandler := handler.NewUserHandler(userService)
+	accountRepository := account.NewRepository(db)
+	accountService := account.NewService(accountRepository)
+	accountHandler := handler.NewAccountHandler(accountService)
 
-	// Creating Data===================
+	// // Creating Data===================
 	// book := book.Book{}
 	// book.Title = "American Captain"
 	// book.Price = 57500
@@ -104,7 +107,7 @@ func main() {
 
 	router := gin.Default()
 
-	// routerV1 := router.Group("/v1")
+	routerV1 := router.Group("/v1")
 
 	// routerV1.GET("/", handler.RootHandler)
 
@@ -122,9 +125,9 @@ func main() {
 	// routerV1.PUT("/books/:id", bookHandler.UpdateBookHandler)
 	// routerV1.DELETE("/books/:id", bookHandler.DeleteBookHandler)
 
-	// routerV1.POST("/signUp", userHandler.SignUp)
-
-	// routerV1.POST("/login", userHandler.Login)
+	routerV1.POST("/SignUp", accountHandler.SignUp)
+	routerV1.GET("/Account/Role", accountHandler.GetAccountByRole)
+	routerV1.POST("/Login/Auth", accountHandler.Login)
 
 	// routerV1Books := routerV1.Group("/books", middleware.RequiredAuth)
 	// routerV1Books.POST("", bookHandler.PostBooksHandler)
@@ -132,6 +135,9 @@ func main() {
 	// routerV1Books.GET("/:id", bookHandler.GetBookById)
 	// routerV1Books.PUT("/:id", bookHandler.UpdateBookHandler)
 	// routerV1Books.DELETE("/:id", bookHandler.DeleteBookHandler)
+
+
+	
 
 	router.Run(":3030")
 }

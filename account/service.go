@@ -3,7 +3,8 @@ package account
 import (
 	"errors"
 	"time"
-	"strconv"
+	"os"
+
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -11,6 +12,7 @@ import (
 type Service interface {
 	Create(signupRequest SignupRequest) (Account, error)
 	Login(loginRequest LoginRequest) (string, error)
+	GetAccountByRole(roleID string) ([]Account, error)
 }
 
 type service struct {
@@ -36,54 +38,69 @@ func (s *service) Create(signupRequest SignupRequest) (Account, error) {
 		name:     signupRequest.Name,
 		Email:    signupRequest.Email,
 		Password: string(hash),
+		RolesId: signupRequest.RolesId,
 	}
 
 	newAccount, err := s.repository.Create(account)
-	return newAccount, err
+	return newAccount, nil
 }
 
-func (s *service) Login(loginRequest LoginRequest) (LoginResponse, error) {
+func (s *service) Login(loginRequest LoginRequest) (string, error) {
 	account, err := s.repository.GetAccountByEmail(loginRequest.Email)
 	if err != nil {
-		return LoginResponse{}, err
+		return "", err
+	}else if account.ID == 0{
+		return"", errors.New("Invalid email and password")
 	}
 
 	//Verifikasi Password
 	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(loginRequest.Password))
 	if err != nil {
-		return LoginResponse{}, errors.New("Invalid credentials")
+		return "",err
 	}
 
-	roleID := account.RolesId
+// 	//Membuat Token JWT
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"account_Id": account.ID,
+		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+	})
 
-	//Membuat Token JWT
-	token, err := GenerateToken(account.ID, "asdasd", strconv.Itoa(int(roleID)))
-	if err != nil {
-		return LoginResponse{}, err
-	}
-
-	//Return JWT sebagai respons
-	return LoginResponse{
-		Token: token,
-	}, nil
-}
-
-// GenerateToken menghasilkan token JWT untuk pengguna yang berhasil login.
-func GenerateToken(accountID uint, secretKey string, roleID string) (string, error) {
-	//Membuat claim token
-	claims := jwt.MapClaims{
-		"user_id": accountID,
-		"role_id": roleID,
-		"exp":     time.Now().Add(time.Hour * 24).Unix(), // Token berlaku selama 24 jam
-	}
-	// Membuat token dengan klaim
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	// Menandatangani token dengan kunci rahasia
-	tokenString, err := token.SignedString([]byte(secretKey))
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {
 		return "", err
 	}
-	return tokenString, nil
 
+	//Return JWT sebagai respons
+	return tokenString, nil
 }
+
+
+func (s *service) GetAccountByRole(roleName string) ([]Account, error) {
+    // Panggil metode repository yang sesuai untuk mengambil akun berdasarkan peran (role)
+    account, err := s.repository.GetAccountByRole(roleName)
+    if err != nil {
+        return nil, err
+    }
+    
+    return account, nil
+}
+
+// GenerateToken menghasilkan token JWT untuk pengguna yang berhasil login.
+// func GenerateToken(accountID uint, secretKey string, roleID string) (string, error) {
+// 	//Membuat claim token
+// 	claims := jwt.MapClaims{
+// 		"account_id": accountID,
+// 		"role_id": roleID,
+// 		"exp":     time.Now().Add(time.Hour * 24).Unix(), // Token berlaku selama 24 jam
+// 	}
+// 	// Membuat token dengan klaim
+// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+// 	// Menandatangani token dengan kunci rahasia
+// 	tokenString, err := token.SignedString([]byte(secretKey))
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	return tokenString, nil
+
+// }

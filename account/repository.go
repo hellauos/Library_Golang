@@ -26,8 +26,8 @@ func (r *repository) Create(account Account) (Account, error) {
 }
 
 
-func (s *service) GetAllAccount() ([]Account, error) {
-	accounts, err := s.repository.GetAllAccount()
+func (r *repository) GetAllAccount() ([]Account, error) {
+	accounts, err := r.GetAllAccount()
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +43,9 @@ func (r *repository) GetAccountByRole(roleName string) ([]Account, error){
 	return account, err
 }
 
-func (r *repository) GetAccountByEmail(email string) (Account, error) {
+func (r *repository) GetAccountByEmail(email string) (Account, error){
 	var account Account
-	err := r.db.Where("email = ?", email).First(&account).Error
-	if err != nil {
-		return Account{}, err
-	}
-	return account, nil
-}	
+	err := r.db.First(&account, "email = ?", email).Error
+	return account,err
+}
+

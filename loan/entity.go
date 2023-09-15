@@ -6,7 +6,7 @@ import (
 
 type Loan struct {
 	ID        uint
-	DueDate   time.Duration
+	DueDate   time.Time
 	Status    int
 	BookId    uint
 	AccountId uint
