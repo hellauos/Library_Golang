@@ -50,10 +50,10 @@ func (h *bookHandler) PostBooksHandler(c *gin.Context) {
 	claims, ok := jwtClaims.(jwt.MapClaims)
 	fmt.Println(jwtClaims)
 	// Memeriksa apakah pengguna memiliki peran "admin"
-	RolesId, _ := claims["roles"].(int)
+	RolesId, _ := claims["roles"]
 	fmt.Println(claims)
 	fmt.Println(RolesId)
-	if !ok || RolesId != 1 {
+	if !ok || RolesId != float64(1) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
 		return
 	}
@@ -195,7 +195,6 @@ func (h *bookHandler) UpdateBookHandler(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied. Admin role required."})
 		return
 	}
-
 
 	b, err := h.bookService.Update(ID, bookRequest)
 	bookResponse := book.ConvertToBookResponse(b)
