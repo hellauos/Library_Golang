@@ -65,11 +65,11 @@ func main() {
 
 	// routerV1.POST("/login", userHandler.Login)
 
-	// routerV1Books := routerV1.Group("/books", middleware.RequiredAuth)
+	routerV1Loan := routerV1.Group("/loan", middleware.RequiredAuthLoan)
 	routerV1.POST("/books/GetBookByTitleCategory", bookHandler.GetBookByTitleCategory)
-	routerV1.POST("/books/LoanBook", loanHandler.LoanBook)
-	routerV1.POST("/books/GetLoanData", loanHandler.GetLoanData)
-	routerV1.POST("/books/ReturnBook", loanHandler.ReturnBook)
+	routerV1Loan.POST("/LoanBook", loanHandler.LoanBook)
+	routerV1Loan.POST("/GetLoanData", loanHandler.GetLoanData)
+	routerV1Loan.POST("/ReturnBook", loanHandler.ReturnBook)
 
 	// routerV1Books.POST("", bookHandler.PostBooksHandler)
 	// routerV1Books.GET("/:id", bookHandler.GetBookById)
